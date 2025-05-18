@@ -7,31 +7,28 @@ import ContactUs from "./jsx/contactUs";
 import Layout from "./jsx/layout";
 import Cart from "./jsx/cart";
 import Clothes from "./jsx/clothes";
-import { productContext } from "./context/products.js";
 import { useEffect, useState } from "react";
 
 function App() {
 
-  const [products , setProducts] = useState([]);
+  // const [products , setProducts] = useState([]);
 
-  useEffect( () => {
-    const fetchProducts =  async () => {
-      try{
-        const response = await fetch("https://api.escuelajs.co/api/v1/products")
-        const data = await response.json();
-        setProducts(data);
-        console.log(data)
-      }
-      catch(error){
-        console.log(error);
-      }
-    };
-    fetchProducts();
-  },[])
+  // useEffect( () => {
+  //   const fetchProducts =  async () => {
+  //     try{
+  //       const response = await fetch("https://api.escuelajs.co/api/v1/products")
+  //       const data = await response.json();
+  //       setProducts(data);
+  //     }
+  //     catch(error){
+  //       console.log(error);
+  //     }
+  //   };
+  //   fetchProducts();
+  // },[])
 
   return (
     <>
-      <productContext.Provider value={products}>
         <Routes>
           <Route element={<Layout />}>
             <Route path="/" element={<Home />} />
@@ -42,7 +39,6 @@ function App() {
             <Route path="/product/:id" element={<Clothes />} />
           </Route>
         </Routes>
-      </productContext.Provider>
     </>
   );
 }

@@ -1,39 +1,38 @@
-import {useContext} from 'react';
-import { productContext } from '../context/products';
-import { Link } from 'react-router-dom';
-import '../css/shop.css';
+import { useContext } from "react";
+import { Link } from "react-router-dom";
+import "../css/shop.css";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchProducts } from "../features/products/productsSlice";
+import { useEffect } from "react";
 
 export default function Shop() {
-  const products = useContext(productContext);
+  const dispatch = useDispatch();
+  const products = useSelector((state) => state.products.items);
+  const status = useSelector((state) => state.products.status);
+  const errors = useSelector((state) => state.products.error);
 
-  if(products.length === 0){
-    return(
-      <div className="shop-loading">
-        <h2>Loading products...</h2>
-      </div>
-    )
+  useEffect(() => {
+    if (status === "idle") {
+      dispatch(fetchProducts());
+    }
+  }, [status, dispatch]);
+
+  if (status === "loading") {
+    return <div>Loading...</div>;
   }
-  
-  return(
-    <div className="shop">
-      <div className="shop__header">
-        <h1 className="shop__title">Our Collection</h1>
-        <p className="shop__subtitle">Discover our latest products</p>
-      </div>
-      
-      <div className="shop__grid">
-        {products.map((product) => (
-          <Link to={`/product/${product.id}`} key={product.id} className="shop__product-card">
-            <div className="shop__product-image-container">
-              <img src={product.images[0]} alt={product.title} className="shop__product-image" />
-            </div>
-            <div className="shop__product-content">
-              <h3 className="shop__product-title">{product.title}</h3>
-              <p className="shop__product-price">₹{product.price}</p>
-            </div>
-          </Link>
-        ))}
-      </div>
+  if (status === "failed") {
+    return <div>Error : {errors}</div>;
+  }
+
+  return (
+    <div>
+      {products.map((product) => (
+        <div key={product.id}>
+          <img src={product.images[0]} />
+          <h3>{product.title}</h3>
+          <p>Rs {product.price.toLocaleString()}</p>
+        </div>
+      ))}
     </div>
-  )
+  );
 }
