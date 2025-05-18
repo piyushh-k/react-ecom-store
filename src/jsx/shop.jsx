@@ -18,21 +18,45 @@ export default function Shop() {
   }, [status, dispatch]);
 
   if (status === "loading") {
-    return <div>Loading...</div>;
+    return (
+      <div className="shop-loading">
+        <h2>Loading products...</h2>
+      </div>
+    );
   }
+  
   if (status === "failed") {
-    return <div>Error : {errors}</div>;
+    return (
+      <div className="shop-loading">
+        <h2>Error Occured : {errors}</h2>
+      </div>
+    );
   }
 
   return (
-    <div>
-      {products.map((product) => (
-        <div key={product.id}>
-          <img src={product.images[0]} />
-          <h3>{product.title}</h3>
-          <p>Rs {product.price.toLocaleString()}</p>
-        </div>
-      ))}
+    <div className="shop">
+      <div className="shop__header">
+        <h1 className="shop__title">Our Collection</h1>
+        <p className="shop__subtitle">Discover our carefully curated selection of products</p>
+      </div>
+      
+      <div className="shop__grid">
+        {products.map((product) => (
+          <Link to={`/product/${product.id}`} className="shop__product-card" key={product.id}>
+            <div className="shop__product-image-container">
+              <img 
+                src={product.images[0]} 
+                alt={product.title}
+                className="shop__product-image"
+              />
+            </div>
+            <div className="shop__product-content">
+              <h3 className="shop__product-title">{product.title}</h3>
+              <p className="shop__product-price">Rs {product.price.toLocaleString()}</p>
+            </div>
+          </Link>
+        ))}
+      </div>
     </div>
   );
 }
