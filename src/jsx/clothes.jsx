@@ -5,6 +5,9 @@ import { fetchProducts } from "../features/products/productsSlice";
 import "../css/clothes.css";
 import { useForm } from "react-hook-form";
 
+//commit check
+
+
 export default function Clothes() {
   const { id } = useParams();
   const dispatch = useDispatch();
