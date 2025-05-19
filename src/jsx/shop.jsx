@@ -28,7 +28,7 @@ export default function Shop() {
   if (status === "failed") {
     return (
       <div className="shop-loading">
-        <h2>Error Occured : {errors}</h2>
+        <h2>Error Occured : {errors || 'Something went wrong'}</h2>
       </div>
     );
   }
@@ -41,21 +41,27 @@ export default function Shop() {
       </div>
       
       <div className="shop__grid">
-        {products.map((product) => (
-          <Link to={`/product/${product.id}`} className="shop__product-card" key={product.id}>
-            <div className="shop__product-image-container">
-              <img 
-                src={product.images[0]} 
-                alt={product.title}
-                className="shop__product-image"
-              />
-            </div>
-            <div className="shop__product-content">
-              <h3 className="shop__product-title">{product.title}</h3>
-              <p className="shop__product-price">Rs {product.price.toLocaleString()}</p>
-            </div>
-          </Link>
-        ))}
+        {products && products.length > 0 ? (
+          products.map((product) => (
+            <Link to={`/product/${product.id}`} className="shop__product-card" key={product.id}>
+              <div className="shop__product-image-container">
+                <img 
+                  src={product.images[0]} 
+                  alt={product.title}
+                  className="shop__product-image"
+                />
+              </div>
+              <div className="shop__product-content">
+                <h3 className="shop__product-title">{product.title}</h3>
+                <p className="shop__product-price">Rs {product.price.toLocaleString()}</p>
+              </div>
+            </Link>
+          ))
+        ) : (
+          <div className="shop-loading">
+            <h2>No products available</h2>
+          </div>
+        )}
       </div>
     </div>
   );
