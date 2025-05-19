@@ -15,6 +15,8 @@ export default function Clothes() {
   const [activeTab, setActiveTab] = useState("description");
   const [rating , setRating] = useState(0); 
 
+  //check git
+
   const {
     register,
     handleSubmit,
