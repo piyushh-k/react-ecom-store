@@ -7,11 +7,11 @@ export default function Layout() {
         <div className="layout">
             <nav className="navbar">
                 <div className="navbar__container">
-                    <Link to="/" className="navbar__logo">
+                    <Link to="/" className="navbar__logo" reloadDocument>
                         <img src={logo} alt="Logo" className="navbar__logo-img" />
                     </Link>
                     <div className="navbar__links">
-                        <Link to="/" className="navbar__link">Home</Link>
+                        <Link to="/" className="navbar__link" >Home</Link>
                         <Link to="/shop" className="navbar__link">Shop</Link>
                         <Link to="/aboutUs" className="navbar__link">About</Link>
                         <Link to="/contactUs" className="navbar__link">Contact</Link>

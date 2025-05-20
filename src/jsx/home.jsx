@@ -1,8 +1,27 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import "../css/home.css"; 
+import "../css/home.css";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchProducts } from "../features/products/productsSlice";
 
 export default function Home() {
+  const dispatch = useDispatch();
+  const products = useSelector((state) => state.products.items);
+  const status = useSelector((state) => state.products.status);
+  const ProductErrors = useSelector((state) => state.products.ProductErrors);
+
+  useEffect(() => {
+    if (status === "idle") {
+      dispatch(fetchProducts());
+    }
+  }, [dispatch]);
+
+  if (status === "loading") {
+    return <p>Loading...</p>;
+  }
+  if (status === "failed") {
+    return <p>some error occured : {ProductErrors}</p>;
+  }
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -30,7 +49,7 @@ export default function Home() {
           className="collection-card collection-card--large"
           style={{
             backgroundImage:
-              "url('https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=800&q=80')",
+              "url('https://i.pinimg.com/736x/11/5e/00/115e00ba95170fb252db310d725567a5.jpg')",
           }}
         >
           <div className="collection-card__overlay">
@@ -105,6 +124,32 @@ export default function Home() {
             </div>
           </div>
         </div>
+      </div>
+      <div>
+        <section className="featured-products">
+          <h2 className="featured-products__title">Featured Products</h2>
+          <div className="featured-products__grid">
+            {products.slice(1, 11).map((product) => (
+              <Link
+                to={`product/${product.id}`}
+                key={product.id}
+                className="product-card"
+              >
+                <div className="product-card__image-container">
+                  <img
+                    src={product.images[0]}
+                    alt={product.title}
+                    className="product-card__image"
+                  />
+                </div>
+                <div className="product-card__content">
+                  <h3 className="product-card__title">{product.title}</h3>
+                  <p className="product-card__price">${product.price}</p>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </section>
       </div>
     </>
   );

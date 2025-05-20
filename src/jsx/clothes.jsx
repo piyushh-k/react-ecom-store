@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { useState, useEffect, act } from "react";
+import { useState, useEffect} from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchProducts } from "../features/products/productsSlice";
 import "../css/clothes.css";
@@ -10,10 +10,10 @@ export default function Clothes() {
   const dispatch = useDispatch();
   const products = useSelector((state) => state.products.items);
   const status = useSelector((state) => state.products.status);
-  const errors = useSelector((state) => state.products.error);
+  const ProductErrors = useSelector((state) => state.products.error);
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState("description");
-  const [rating , setRating] = useState(0); 
+  const [rating, setRating] = useState(0);
 
   //check git
 
@@ -21,11 +21,11 @@ export default function Clothes() {
     register,
     handleSubmit,
     watch,
-    formState: { formErrors },
+    formState: { errors },
   } = useForm();
 
   const onFormSubmit = (data) => {
-    console.log(data.review);
+    console.log(data.review, data.name);
   };
 
   const increaseCount = () => {
@@ -47,7 +47,9 @@ export default function Clothes() {
   }
 
   if (status === "failed") {
-    return <div className="clothes__error">Some error occured : {errors}</div>;
+    return (
+      <div className="clothes__error">Some error occured : {ProductErrors}</div>
+    );
   }
 
   const product = products.find((item) => item.id === parseInt(id));
@@ -62,16 +64,76 @@ export default function Clothes() {
   } else if (activeTab === "info") {
     content = product.title;
   } else if (activeTab === "form") {
-    content = <form onSubmit={handleSubmit(onFormSubmit)}>
-      <p>Be the first to review “Anchor Bracelet” </p>
-      {[1 , 2 , 3 , 4 ,5].map((star) => (
-        <span key={star} onClick={() => {setRating(star)}} style={{cursor: "pointer",color: star <= rating ? "gold" : "gray",fontSize: "2rem",}}>
-          ⭐️ 
-        </span>
-      ))}
-      <input defaultValue={'write review'} {...register("review")} />
-      <input type="submit"/>
-    </form>;
+    content = (
+      <form
+        onSubmit={handleSubmit(onFormSubmit)}
+        className="clothes__review-form"
+      >
+        <p>Be the first to review {product.title}</p>
+        <p>You Rating : </p>
+        <div className="clothes__rating">
+          {[1, 2, 3, 4, 5].map((star) => (
+            <span
+              key={star}
+              onClick={() => {
+                setRating(star);
+              }}
+              style={{
+                cursor: "pointer",
+                color: star <= rating ? "gold" : "gray",
+                fontSize: "2rem",
+              }}
+            >
+              *
+            </span>
+          ))}
+        </div>
+        <div className="clothes__form-group">
+          <h6>Write your review here:</h6>
+          <textarea
+            defaultValue={"write review"}
+            {...register("review")}
+            rows="4"
+          />
+        </div>
+        <div className="clothes__form-group">
+          <h6>Name*:</h6>
+          <input
+            placeholder="Name"
+            {...register("name", {
+              required: true,
+              minLength: {
+                value: 2,
+                message: "name must be atleast 2 characters long.",
+              },
+            })}
+            type="text"
+          />
+          {errors.name && (
+            <p className="clothes__error-message">{errors.name.message}</p>
+          )}
+        </div>
+        <div className="clothes__form-group">
+          <h6>Email*:</h6>
+          <input
+            {...register("email", {
+              required: true,
+              pattern: {
+                value: /^[\w.-]+@[a-zA-Z\d.-]+\.[a-zA-Z]{2,}$/,
+                message: "Invalid email format",
+              },
+            })}
+            type="email"
+          />
+          {errors.email && (
+            <p className="clothes__error-message">{errors.email.message}</p>
+          )}
+        </div>
+        <button type="submit" className="clothes__submit-button">
+          Submit Review
+        </button>
+      </form>
+    );
   }
 
   return (
@@ -88,7 +150,7 @@ export default function Clothes() {
         </div>
 
         <div className="clothes__details">
-          <p className="clothes__price">Rs. {product.price.toLocaleString()}</p>
+          <p className="clothes__price"> $ {product.price.toLocaleString()}</p>
 
           <div className="clothes__purchase-controls">
             <div className="clothes__quantity-controls">

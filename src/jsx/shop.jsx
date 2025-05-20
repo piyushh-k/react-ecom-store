@@ -53,7 +53,7 @@ export default function Shop() {
               </div>
               <div className="shop__product-content">
                 <h3 className="shop__product-title">{product.title}</h3>
-                <p className="shop__product-price">Rs {product.price.toLocaleString()}</p>
+                <p className="shop__product-price">${product.price.toLocaleString()}</p>
               </div>
             </Link>
           ))

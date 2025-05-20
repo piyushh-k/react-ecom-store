@@ -7,7 +7,7 @@ import ContactUs from "./jsx/contactUs";
 import Layout from "./jsx/layout";
 import Cart from "./jsx/cart";
 import Clothes from "./jsx/clothes";
-import { useEffect, useState } from "react";
+
 
 function App() {
   return (
@@ -22,6 +22,7 @@ function App() {
             <Route path="/product/:id" element={<Clothes />} />
           </Route>
         </Routes>
+        
     </>
   );
 }
