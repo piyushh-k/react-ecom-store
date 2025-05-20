@@ -22,7 +22,6 @@ function App() {
             <Route path="/product/:id" element={<Clothes />} />
           </Route>
         </Routes>
-        
     </>
   );
 }

@@ -12,7 +12,7 @@ export default function Clothes() {
   const status = useSelector((state) => state.products.status);
   const ProductErrors = useSelector((state) => state.products.error);
   const [quantity, setQuantity] = useState(1);
-  const [activeTab, setActiveTab] = useState("description");
+  const [activeTab, setActiveTab] = useState("form");
   const [rating, setRating] = useState(0);
 
   //check git
@@ -24,9 +24,33 @@ export default function Clothes() {
     formState: { errors },
   } = useForm();
 
-  const onFormSubmit = (data) => {
-    console.log(data.review, data.name);
-  };
+const onFormSubmit = async (data) => {
+    try{
+      const response = await fetch('https://formspree.io/f/xrbqdobl',{
+        method: 'POST',
+        headers : {
+          'Content-Type' : 'application/json'
+        },
+        body : JSON.stringify({
+          name : data.name,
+          email : data.email,
+          rating : rating,
+          review : data.review,
+          product : product.title
+        })
+      })
+      if(response.ok){
+        alert('Thanks for you review!')
+        setRating(0);
+        reset()
+      } else{
+        throw new Error("failed to submit form")
+      }
+    } catch(error){
+      alert("Error while submitting form. Please try again.")
+    }
+  }
+
 
   const increaseCount = () => {
     setQuantity((prevCount) => prevCount + 1);
@@ -68,6 +92,8 @@ export default function Clothes() {
       <form
         onSubmit={handleSubmit(onFormSubmit)}
         className="clothes__review-form"
+        action = 'https://formspree.io/f/xrbqdobl'
+        method = "POST"
       >
         <p>Be the first to review {product.title}</p>
         <p>You Rating : </p>
