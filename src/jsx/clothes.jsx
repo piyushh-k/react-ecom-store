@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { fetchProducts } from "../features/products/productsSlice";
 import "../css/clothes.css";
 import { useForm } from "react-hook-form";
+import { addToCart } from "../features/cart/cartSlice";
 
 export default function Clothes() {
   const { id } = useParams();
@@ -14,9 +15,7 @@ export default function Clothes() {
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState("form");
   const [rating, setRating] = useState(0);
-
-  //check git
-
+  
   const {
     register,
     handleSubmit,
