@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchProducts } from "../features/products/productsSlice";
 import "../css/clothes.css";
@@ -15,7 +15,7 @@ export default function Clothes() {
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState("form");
   const [rating, setRating] = useState(0);
-  
+
   const {
     register,
     handleSubmit,
@@ -23,33 +23,32 @@ export default function Clothes() {
     formState: { errors },
   } = useForm();
 
-const onFormSubmit = async (data) => {
-    try{
-      const response = await fetch('https://formspree.io/f/xrbqdobl',{
-        method: 'POST',
-        headers : {
-          'Content-Type' : 'application/json'
+  const onFormSubmit = async (data) => {
+    try {
+      const response = await fetch("https://formspree.io/f/xrbqdobl", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
-        body : JSON.stringify({
-          name : data.name,
-          email : data.email,
-          rating : rating,
-          review : data.review,
-          product : product.title
-        })
-      })
-      if(response.ok){
-        alert('Thanks for you review!')
+        body: JSON.stringify({
+          name: data.name,
+          email: data.email,
+          rating: rating,
+          review: data.review,
+          product: product.title,
+        }),
+      });
+      if (response.ok) {
+        alert("Thanks for you review!");
         setRating(0);
-        reset()
-      } else{
-        throw new Error("failed to submit form")
+        reset();
+      } else {
+        throw new Error("failed to submit form");
       }
-    } catch(error){
-      alert("Error while submitting form. Please try again.")
+    } catch (error) {
+      alert("Error while submitting form. Please try again.");
     }
-  }
-
+  };
 
   const increaseCount = () => {
     setQuantity((prevCount) => prevCount + 1);
@@ -91,8 +90,8 @@ const onFormSubmit = async (data) => {
       <form
         onSubmit={handleSubmit(onFormSubmit)}
         className="clothes__review-form"
-        action = 'https://formspree.io/f/xrbqdobl'
-        method = "POST"
+        action="https://formspree.io/f/xrbqdobl"
+        method="POST"
       >
         <p>Be the first to review {product.title}</p>
         <p>You Rating : </p>
@@ -160,6 +159,18 @@ const onFormSubmit = async (data) => {
       </form>
     );
   }
+  const addInCart = () => {
+    dispatch(
+      addToCart({
+        id: product.id,
+        price: product.price,
+        quantity: quantity,
+        title: product.title,
+        image: product.images[0],
+      })
+    );
+    alert(`${product.title} was added to cart}`)
+  };
 
   return (
     <div className="clothes">
@@ -187,7 +198,7 @@ const onFormSubmit = async (data) => {
                 +
               </button>
             </div>
-            <button className="clothes__button--primary">Add to Cart</button>
+            <button className="clothes__button--primary" onClick={addInCart}>Add to Cart</button>
           </div>
 
           <div className="clothes__tabs-section">
