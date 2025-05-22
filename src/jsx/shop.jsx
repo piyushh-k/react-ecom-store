@@ -46,7 +46,7 @@ export default function Shop() {
             <Link to={`/product/${product.id}`} className="shop__product-card" key={product.id}>
               <div className="shop__product-image-container">
                 <img 
-                  src={product.images[0]} 
+                  src={product.image} 
                   alt={product.title}
                   className="shop__product-image"
                 />

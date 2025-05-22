@@ -166,10 +166,10 @@ export default function Clothes() {
         price: product.price,
         quantity: quantity,
         title: product.title,
-        image: product.images[0],
+        image: product.image
       })
     );
-    alert(`${product.title} was added to cart}`)
+    alert(`${product.title} was added to cart`)
   };
 
   return (
@@ -179,7 +179,7 @@ export default function Clothes() {
 
         <div className="clothes__image-container">
           <img
-            src={product.images[0]}
+            src={product.image}
             alt={product.title}
             className="clothes__image"
           />

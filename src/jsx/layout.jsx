@@ -3,10 +3,23 @@ import "../css/layout.css";
 import logo from "../assets/ecom.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTwitter, faLinkedin } from "@fortawesome/free-brands-svg-icons";
+import { useState } from "react";
+import CartSidebar from "./cartSideBar";
+import { useSelector } from 'react-redux';
 
 export default function Layout() {
+  const [isCartOpen, setIsCartOpen] = useState(false);
+  const cartQuantity = useSelector(state => state.cart.totalQuantity);
+
   return (
-    <div className="layout">
+    <div className="layout">    
+    <nav>
+      <Link onClick={(e) => {e.preventDefault();
+        setIsCartOpen(true);
+      }}>
+        Cart
+      </Link>
+    </nav>
       <nav className="navbar">
         <div className="navbar__container">
           <Link to="/" className="navbar__logo" reloadDocument>
@@ -25,9 +38,16 @@ export default function Layout() {
             <Link to="/contactUs" className="navbar__link">
               Contact
             </Link>
-            <Link to="/cart" className="navbar__link navbar__link--cart">
+            <Link 
+              to="#" 
+              className="navbar__link navbar__link--cart"
+              onClick={(e) => {
+                e.preventDefault();
+                setIsCartOpen(true);
+              }}
+            >
               Cart
-              <span className="navbar__cart-count">0</span>
+              <span className="navbar__cart-count">{cartQuantity}</span>
             </Link>
           </div>
         </div>
@@ -35,6 +55,10 @@ export default function Layout() {
       <main className="main-content">
         <Outlet />
       </main>
+      <CartSidebar 
+        isOpen={isCartOpen} 
+        onClose={() => setIsCartOpen(false)} 
+      />
       <footer className="footer">
         <div className="footer__container">
           <div className="footer__section footer__section--copyright">

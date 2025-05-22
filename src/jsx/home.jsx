@@ -129,7 +129,7 @@ export default function Home() {
         <section className="featured-products">
           <h2 className="featured-products__title">Featured Products</h2>
           <div className="featured-products__grid">
-            {products.slice(1, 11).map((product) => (
+            {products.slice(1, 6).map((product) => (
               <Link
                 to={`product/${product.id}`}
                 key={product.id}
@@ -137,7 +137,7 @@ export default function Home() {
               >
                 <div className="product-card__image-container">
                   <img
-                    src={product.images[0]}
+                    src={product.image}
                     alt={product.title}
                     className="product-card__image"
                   />
