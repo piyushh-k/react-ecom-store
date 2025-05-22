@@ -6,7 +6,7 @@ import "../css/clothes.css";
 import { useForm } from "react-hook-form";
 import { addToCart } from "../features/cart/cartSlice";
 
-const FORMSPREE_ENDPOINT = import.meta.env.VITE_FORMSPREE_ENDPOINT || 'https://formspree.io/f/xrbqdobl';
+const FORMSPREE_ENDPOINT = import.meta.env.VITE_FORMSPREE_ENDPOINT;
 
 export default function Clothes() {
   const { id } = useParams();
