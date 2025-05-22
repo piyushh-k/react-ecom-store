@@ -5,8 +5,11 @@ export const fetchProducts = createAsyncThunk(
     async () => {
         const response = await fetch("https://fakestoreapi.com/products");
         const data = await response.json();
-        console.log(data)
-        return data;
+        const modifiedData = data.map((product) => ({
+            ...product,
+            price : Math.round(product.price)
+        }))
+        return modifiedData;
     }
 )
 

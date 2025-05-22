@@ -29,11 +29,16 @@ export const cartSlice = createSlice({
 
         },
         removeFromCart : (state , action) => {
-            
+            const removeItem = action.payload;
+            const itemToRemove = state.items.find(item => item.id === removeItem.id)
+            state.items = state.items.filter((item) => item.id !== removeItem.id);
+
+            state.totalQuantity = state.totalQuantity - itemToRemove.quantity;
+            state.totalPrice = state.totalPrice - itemToRemove.total
         }
     }
 
 })
 
-export const {addToCart} = cartSlice.actions;
+export const {addToCart , removeFromCart} = cartSlice.actions;
 export default cartSlice.reducer

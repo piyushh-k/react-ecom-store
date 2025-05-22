@@ -166,11 +166,12 @@ export default function Clothes() {
         price: product.price,
         quantity: quantity,
         title: product.title,
-        image: product.image
+        image: product.image,
       })
     );
-    alert(`${product.title} was added to cart`)
+    alert(`${product.title} was added to cart`);
   };
+
 
   return (
     <div className="clothes">
@@ -198,7 +199,9 @@ export default function Clothes() {
                 +
               </button>
             </div>
-            <button className="clothes__button--primary" onClick={addInCart}>Add to Cart</button>
+            <button className="clothes__button--primary" onClick={addInCart}>
+              Add to Cart
+            </button>
           </div>
 
           <div className="clothes__tabs-section">
