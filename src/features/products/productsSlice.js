@@ -1,6 +1,6 @@
 import {createSlice , createAsyncThunk} from '@reduxjs/toolkit';
 
-const API_URL = import.meta.env.VITE_API_URL || 'https://fakestoreapi.com';
+const API_URL = import.meta.env.VITE_API_URL;
 
 export const fetchProducts = createAsyncThunk(
     'products/fetchProducts',
