@@ -10,7 +10,7 @@ import { Provider } from "react-redux";
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <Provider store={store}>
-      <BrowserRouter>
+      <BrowserRouter basename="/react-ecom-store/">
         <App />
       </BrowserRouter>
     </Provider>
