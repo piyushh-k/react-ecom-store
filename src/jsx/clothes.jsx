@@ -6,6 +6,8 @@ import "../css/clothes.css";
 import { useForm } from "react-hook-form";
 import { addToCart } from "../features/cart/cartSlice";
 
+const FORMSPREE_ENDPOINT = import.meta.env.VITE_FORMSPREE_ENDPOINT || 'https://formspree.io/f/xrbqdobl';
+
 export default function Clothes() {
   const { id } = useParams();
   const dispatch = useDispatch();
@@ -15,20 +17,25 @@ export default function Clothes() {
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState("form");
   const [rating, setRating] = useState(0);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const {
     register,
     handleSubmit,
-    watch,
+    reset,
     formState: { errors },
   } = useForm();
 
   const onFormSubmit = async (data) => {
+    if (isSubmitting) return;
+    
+    setIsSubmitting(true);
     try {
-      const response = await fetch("https://formspree.io/f/xrbqdobl", {
+      const response = await fetch(FORMSPREE_ENDPOINT, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Accept": "application/json"
         },
         body: JSON.stringify({
           name: data.name,
@@ -38,15 +45,19 @@ export default function Clothes() {
           product: product.title,
         }),
       });
-      if (response.ok) {
-        alert("Thanks for you review!");
-        setRating(0);
-        reset();
-      } else {
-        throw new Error("failed to submit form");
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
+      
+      alert("Thanks for your review!");
+      setRating(0);
+      reset();
     } catch (error) {
+      console.error('Error submitting review:', error);
       alert("Error while submitting form. Please try again.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -65,12 +76,12 @@ export default function Clothes() {
   }, [status, dispatch]);
 
   if (status === "loading") {
-    return <div className="clothes__loading">loading...</div>;
+    return <div className="clothes__loading">Loading...</div>;
   }
 
   if (status === "failed") {
     return (
-      <div className="clothes__error">Some error occured : {ProductErrors}</div>
+      <div className="clothes__error">Some error occurred: {ProductErrors}</div>
     );
   }
 
@@ -90,11 +101,10 @@ export default function Clothes() {
       <form
         onSubmit={handleSubmit(onFormSubmit)}
         className="clothes__review-form"
-        action="https://formspree.io/f/xrbqdobl"
-        method="POST"
+        noValidate
       >
         <p>Be the first to review {product.title}</p>
-        <p>You Rating : </p>
+        <p>Your Rating: </p>
         <div className="clothes__rating">
           {[1, 2, 3, 4, 5].map((star) => (
             <span
@@ -115,21 +125,34 @@ export default function Clothes() {
         <div className="clothes__form-group">
           <h6>Write your review here:</h6>
           <textarea
-            defaultValue={"write review"}
-            {...register("review")}
+            {...register("review", {
+              required: "Review is required",
+              minLength: {
+                value: 10,
+                message: "Review must be at least 10 characters long"
+              }
+            })}
             rows="4"
+            placeholder="Write your review here..."
           />
+          {errors.review && (
+            <p className="clothes__error-message">{errors.review.message}</p>
+          )}
         </div>
         <div className="clothes__form-group">
           <h6>Name*:</h6>
           <input
             placeholder="Name"
             {...register("name", {
-              required: true,
+              required: "Name is required",
               minLength: {
                 value: 2,
-                message: "name must be atleast 2 characters long.",
+                message: "Name must be at least 2 characters long"
               },
+              pattern: {
+                value: /^[a-zA-Z\s]*$/,
+                message: "Name can only contain letters and spaces"
+              }
             })}
             type="text"
           />
@@ -141,24 +164,30 @@ export default function Clothes() {
           <h6>Email*:</h6>
           <input
             {...register("email", {
-              required: true,
+              required: "Email is required",
               pattern: {
-                value: /^[\w.-]+@[a-zA-Z\d.-]+\.[a-zA-Z]{2,}$/,
-                message: "Invalid email format",
-              },
+                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                message: "Invalid email address"
+              }
             })}
             type="email"
+            placeholder="your@email.com"
           />
           {errors.email && (
             <p className="clothes__error-message">{errors.email.message}</p>
           )}
         </div>
-        <button type="submit" className="clothes__submit-button">
-          Submit Review
+        <button 
+          type="submit" 
+          className="clothes__submit-button"
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? 'Submitting...' : 'Submit Review'}
         </button>
       </form>
     );
   }
+
   const addInCart = () => {
     dispatch(
       addToCart({
@@ -171,7 +200,6 @@ export default function Clothes() {
     );
     alert(`${product.title} was added to cart`);
   };
-
 
   return (
     <div className="clothes">
@@ -228,7 +256,7 @@ export default function Clothes() {
                 }`}
                 onClick={() => setActiveTab("form")}
               >
-                Review Form
+                Reviews
               </button>
             </div>
             <div className="clothes__content">{content}</div>
