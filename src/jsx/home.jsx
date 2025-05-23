@@ -37,7 +37,7 @@ export default function Home() {
           Arrivals
         </h1>
         <p className="home-hero__desc">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit
+          Lorem ipsum dolo hrlkioiu7877 <br/> sit amet, consectetur adipiscing elit. Ut elit
           tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.
         </p>
         <button className="home-hero__btn" onClick={scrollToTop}>
