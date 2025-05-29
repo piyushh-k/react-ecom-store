@@ -97,6 +97,9 @@ export default function CartSidebar({ isOpen, onClose }) {
             <span className="cart-sidebar__total-label">Total:</span>
             <span className="cart-sidebar__total-price">${totalPrice}</span>
           </div>
+          <button >
+            View Cart
+          </button>
           <button className="cart-sidebar__checkout" disabled={cartItems.length === 0}>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="cart-sidebar__checkout-icon">
               <path d="M5 13L9 17L19 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -109,6 +112,7 @@ export default function CartSidebar({ isOpen, onClose }) {
             </svg>
             Clear Cart
           </button>
+
         </div>
       </div>
 
