@@ -32,9 +32,7 @@ export default function Layout() {
             <Link to="/shop" className="navbar__link">
               Shop
             </Link>
-            <Link to="/aboutUs" className="navbar__link">
-              About
-            </Link>
+          
             <Link to="/contactUs" className="navbar__link">
               Contact
             </Link>
