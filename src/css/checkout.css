@@ -216,12 +216,49 @@
     padding: 0.5rem;
   }
   .checkout-title {
-    font-size: 2rem;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
   }
   .checkout-form, .checkout-summary {
-    padding: 1rem;
+    padding: 0.7rem;
+    border-radius: 8px;
+  }
+  .checkout-form h2, .checkout-summary h2 {
+    font-size: 1.05rem;
+    margin-bottom: 0.5rem;
+  }
+  .checkout-form-group input {
+    padding: 0.6rem 0.7rem;
+    font-size: 0.95rem;
+  }
+  .checkout-btn {
+    padding: 0.8rem 0;
+    font-size: 1rem;
+  }
+  .checkout-summary-img {
+    width: 36px;
+    height: 36px;
+  }
+  .checkout-summary-title {
+    font-size: 0.95rem;
+  }
+  .checkout-summary-qty, .checkout-summary-price {
+    font-size: 0.9rem;
   }
   .checkout-success {
-    padding: 2rem 0.5rem;
+    padding: 1.2rem 0.3rem;
+    border-radius: 8px;
+  }
+}
+
+@media (max-width: 400px) {
+  .checkout-container {
+    padding: 0.2rem;
+  }
+  .checkout-form, .checkout-summary {
+    padding: 0.3rem;
+  }
+  .checkout-btn {
+    font-size: 0.95rem;
   }
 } 
