@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [react()],
   base: '/react-ecom-store/', 
   build: {
-    outDir: 'docs', 
+    outDir: 'dist', 
     sourcemap: false,
     minify: 'terser',
     terserOptions: {
